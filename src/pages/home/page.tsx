@@ -210,7 +210,8 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Cloud Computing</h3>
               </div>
               <p className="text-gray-600 dark:text-gray-300">
-                Developing scalable cloud architectures, microservices orchestration, and distributed resource management systems for next-generation cloud infrastructure.
+               컴퓨팅 서버를 구성하는 CPU, GPU, Memory, Storage 등을 가상화된 인스턴스 (Virtual Machine Instance) 로 분할하여 다중 사용자 (Multi Tenants) 가 접근할 수 있도록 하는 기술입니다. 
+               <p> 서비스 제공자 (Serivce Provider) 는 값비싼 서버 구축 및 확장 비용을 부담하지 않으면서 자신들의 응용 처리 요구 성능에 적합한 클러스터 환경을 구성할 수 있습니다. </p>
               </p>
             </Card>
 
@@ -222,7 +223,8 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">GPU Acceleration for AI</h3>
               </div>
               <p className="text-gray-600 dark:text-gray-300">
-                Optimizing GPU clusters for AI workloads, developing efficient parallel algorithms, and creating high-performance computing solutions for machine learning.
+                고수준의 병렬성 (high parallelism) 을 제공하는 그래픽 프로세싱 유닛 (GPU) 을 이용하여 머신러닝과 같은 인공지능 응용 및 빅데이터 처리 속도를 가속화하는 기술입니다. 
+                <p>GPU 의 스트리밍 프로세서 (streaming processors) 할당 및 주파수 조정 (frequency scaling) 을 통해 전력 소비를 줄이면서도 응용 처리 성능을 최대화하는 기법을 고안할 수 있습니다.</p>
               </p>
             </Card>
 
@@ -234,7 +236,8 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Sustainable Data Center</h3>
               </div>
               <p className="text-gray-600 dark:text-gray-300">
-                Researching energy-efficient data center designs, green computing technologies, and sustainable infrastructure solutions for environmentally responsible computing.
+                기존의 화석 (coal) 에너지가 아닌 태양열 (photovoltaic) 과 풍력 (wind power) 과 같은 신재생 에너지 (renewable energy) 를 이용하여 데이터 센터와 같은 대규모 클러스터의 전력을 공급하는 기술입니다. 
+                <p>주파수 조정 (frequency scaling), 동적 사이징 (dynamic right sizing) 및 에너지 스토리지 (energy storage) 기반 기술을 통하여 전력 공급의 안정성과 사용자 서비스 품질 보장을 동시에 달성할 수 있습니다.</p>
               </p>
             </Card>
 
@@ -246,7 +249,7 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Distributed Optimization</h3>
               </div>
               <p className="text-gray-600 dark:text-gray-300">
-                Advanced algorithms for distributed optimization problems, consensus mechanisms, and efficient coordination protocols in large-scale distributed systems.
+                높은 차원수 (high dimensionality) 를 가지는 최적화 문제 (optimization problem) 의 해를 찾는데 걸리는 긴 풀이 시간을 줄이기 위한 분할 계산 이론입니다. 이중성 (duality) 을 기반으로 원 문제를 분할 가능한 형태로 변형할 수 있습니다. 본 이론을 통해 수백대 이상의 서버를 포함하는 클러스터 환경에서 확장가능한 (scalable) 자원 관리 및 작업 할당 기법을 설계할 수 있습니다.
               </p>
             </Card>
           </div>
@@ -298,7 +301,7 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-sm text-gray-500">
                     <i className="ri-team-line mr-1"></i>
-                    <span>4 Contributors</span>
+                    <span>2 Contributors</span>
                   </div>
                   <div className="flex items-center text-orange-600 font-semibold group-hover:text-orange-700">
                     <span className="mr-2 text-sm">View Progress</span>
@@ -340,7 +343,7 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-sm text-gray-500">
                     <i className="ri-team-line mr-1"></i>
-                    <span>3 Contributors</span>
+                    <span>2 Contributors</span>
                   </div>
                   <div className="flex items-center text-green-600 font-semibold group-hover:text-green-700">
                     <span className="mr-2 text-sm">View Progress</span>
@@ -382,7 +385,7 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-sm text-gray-500">
                     <i className="ri-team-line mr-1"></i>
-                    <span>5 Contributors</span>
+                    <span>1 Contributors</span>
                   </div>
                   <div className="flex items-center text-purple-600 font-semibold group-hover:text-purple-700">
                     <span className="mr-2 text-sm">View Progress</span>
@@ -397,7 +400,7 @@ export default function Home() {
           <div className="mt-12 text-center">
             <div className="inline-flex items-center px-6 py-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
               <i className="ri-time-line text-blue-600 mr-2"></i>
-              <span className="text-gray-700 font-medium">Projects updated regularly - Last update: December 2024</span>
+              <span className="text-gray-700 font-medium">Projects updated regularly - Last update: August 2025</span>
             </div>
           </div>
         </div>

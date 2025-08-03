@@ -1,17 +1,21 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { gapi } from 'gapi-script';
 import Navigation from '../../components/layout/Navigation';
 import Card from '../../components/base/Card';
 import Button from '../../components/base/Button';
 import Modal from '../../components/base/Modal';
 import Input from '../../components/base/Input';
-import { seminarsData } from '../../mocks/seminars';
+
+
+// TODO: .env 파일 또는 다른 보안 방법을 사용하여 실제 키로 교체하세요.
+const API_KEY = 'AIzaSyB9bRvxAA-UCwOviX5DqKxihFOR1Ravsr8';
+const CLIENT_ID = '408825722492-u9lcsgdln403o58mmn4ts0k9plhqtbsn.apps.googleusercontent.com';
+const FOLDER_ID = '1XvTCStFfaljeucRj0y0CFwICs3qIc_7K'; // 세미나 파일이 있는 폴더의 ID
 
 export default function Seminar() {
-  const [previewModal, setPreviewModal] = useState<{isOpen: boolean, seminar: any}>({
-    isOpen: false,
-    seminar: null
-  });
+  const [seminars, setSeminars] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [passwordModal, setPasswordModal] = useState<{isOpen: boolean, seminar: any}>({
     isOpen: false,
@@ -26,10 +30,21 @@ export default function Seminar() {
   const itemsPerPage = 10;
 
   // 페이징된 세미나 데이터 계산
-  const totalPages = Math.ceil(seminarsData.length / itemsPerPage);
+  const totalPages = Math.ceil(seminars.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentSeminars = seminarsData.slice(startIndex, endIndex);
+  const currentSeminars = seminars.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    const initClient = async () => {
+      await gapi.client.init({
+        apiKey: API_KEY,
+        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+      });
+      await syncWithGoogleDrive();
+    };
+    gapi.load('client', initClient);
+  }, []);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -39,13 +54,7 @@ export default function Seminar() {
     });
   };
 
-  const openPreview = (seminar: any) => {
-    setPreviewModal({ isOpen: true, seminar });
-  };
-
-  const closePreview = () => {
-    setPreviewModal({ isOpen: false, seminar: null });
-  };
+  
 
   const openPasswordModal = (seminar: any) => {
     setPasswordModal({ isOpen: true, seminar });
@@ -62,8 +71,8 @@ export default function Seminar() {
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 비밀번호 검증 (예시로 'lab2024' 사용)
-    if (password === 'lab2024') {
+    // 비밀번호 검증
+    if (password === import.meta.env.VITE_SEMINAR_PASSWORD) {
       // 구글 드라이브 파일 다운로드
       window.open(passwordModal.seminar.downloadUrl, '_blank');
       closePasswordModal();
@@ -72,14 +81,55 @@ export default function Seminar() {
     }
   };
 
-  // 구글 드라이브 동기화 함수 (시뮬레이션)
-  const syncWithGoogleDrive = async () => {
-    // 실제로는 Google Drive API를 사용
-    console.log('Google Drive에서 세미나 파일 목록을 가져오는 중...');
-    
-    // 동기화 성공 시뮬레이션
-    alert('Google Drive와 동기화가 완료되었습니다!');
-  };
+  // 구글 드라이브 동기화 함수
+  async function syncWithGoogleDrive() {
+    try {
+      const response = await gapi.client.drive.files.list({
+        q: `'${FOLDER_ID}' in parents`,
+        fields: 'files(id, name, webViewLink, webContentLink, createdTime, size, description)',
+        orderBy: 'createdTime desc',
+      });
+
+      const files = response.result.files;
+      if (files && files.length > 0) {
+        const formattedSeminars = files.map((file: any) => {
+          let fileType = 'File';
+          let fileIcon = 'ri-file-line';
+          const fileNameLower = file.name.toLowerCase();
+
+          if (fileNameLower.endsWith('.pdf')) {
+            fileType = 'PDF';
+            fileIcon = 'ri-file-pdf-line';
+          } else if (fileNameLower.endsWith('.pptx')) {
+            fileType = 'PPTX';
+            fileIcon = 'ri-presentation-line';
+          }
+
+          return {
+            id: file.id,
+            title: file.name.replace(/\.(pdf|pptx)$/i, ''), // 파일 확장자 제거
+            date: file.createdTime,
+            speaker: "Google Drive", // TODO: 스피커 정보 파싱 로직 추가
+            type: fileType,
+            icon: fileIcon,
+            fileSize: file.size ? `${(parseInt(file.size) / 1024 / 1024).toFixed(2)} MB` : 'N/A',
+            downloadUrl: file.webContentLink,
+            webViewLink: file.webViewLink,
+            description: file.description || "No description available.",
+            upcoming: new Date(file.createdTime) > new Date(),
+          };
+        });
+        setSeminars(formattedSeminars);
+        console.log('Google Drive와 동기화가 완료되었습니다!');
+      } else {
+        console.warn('Google Drive 폴더를 찾을 수 없거나, 폴더가 공유되지 않았을 수 있습니다.');
+      }
+    } catch (error) {
+      console.error('Error syncing with Google Drive:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   // 页面变化函数
   const handlePageChange = (page: number) => {
@@ -124,13 +174,7 @@ export default function Seminar() {
                   Google Drive 연동됨
                 </span>
               </div>
-              <Button
-                onClick={syncWithGoogleDrive}
-                variant="outline"
-                icon="ri-refresh-line"
-              >
-                동기화
-              </Button>
+              
             </div>
           </div>
 
@@ -144,69 +188,72 @@ export default function Seminar() {
                 </h2>
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {startIndex + 1}-{Math.min(endIndex, seminarsData.length)} of {seminarsData.length} seminars
+                {startIndex + 1}-{Math.min(endIndex, seminars.length)} of {seminars.length} seminars
               </div>
             </div>
 
-            <div className="space-y-4">
-              {currentSeminars.map((seminar) => (
-                <Card key={seminar.id} hover className="group">
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                          <i className="ri-presentation-line text-blue-600 dark:text-blue-400 text-lg"></i>
+            {isLoading ? (
+              <div className="text-center py-12">
+                <i className="ri-loader-4-line animate-spin text-4xl text-blue-500"></i>
+                <p className="mt-4 text-gray-600 dark:text-gray-300">Loading seminars...</p>
+              </div>
+            ) : currentSeminars.length > 0 ? (
+              <div className="space-y-4">
+                {currentSeminars.map((seminar) => (
+                  <Card key={seminar.id} hover className="group">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-start gap-4">
+                          <div className="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                          <i className={`${seminar.icon} text-blue-600 dark:text-blue-400 text-lg`}></i>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
-                            {seminar.title}
-                          </h3>
-                          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-2">
-                            <span className="flex items-center">
-                              <i className="ri-calendar-line mr-1"></i>
-                              {formatDate(seminar.date)}
-                            </span>
-                            <span className="flex items-center">
-                              <i className="ri-user-line mr-1"></i>
-                              {seminar.speaker}
-                            </span>
-                            <span className="flex items-center">
-                              <i className="ri-google-line mr-1"></i>
-                              Google Drive ({seminar.fileSize})
-                            </span>
-                            <span className="flex items-center">
-                              <i className="ri-shield-line mr-1 text-amber-500"></i>
-                              <span className="text-amber-600 dark:text-amber-400">비밀번호 보호</span>
-                            </span>
+                          <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                              {seminar.title}
+                            </h3>
+                            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-2">
+                              <span className="flex items-center">
+                                <i className="ri-calendar-line mr-1"></i>
+                                {formatDate(seminar.date)}
+                              </span>
+                              <span className="flex items-center">
+                                <i className="ri-user-line mr-1"></i>
+                                {seminar.speaker}
+                              </span>
+                              <span className="flex items-center">
+                                <i className={`${seminar.icon} mr-1`}></i>
+                                {seminar.type} ({seminar.fileSize})
+                              </span>
+                              <span className="flex items-center">
+                                <i className="ri-shield-line mr-1 text-amber-500"></i>
+                                <span className="text-amber-600 dark:text-amber-400">비밀번호 보호</span>
+                              </span>
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                              {seminar.description}
+                            </p>
                           </div>
-                          <p className="text-gray-600 dark:text-gray-300 text-sm">
-                            {seminar.description}
-                          </p>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openPreview(seminar)}
-                        icon="ri-eye-line"
-                      >
-                        Preview
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => openPasswordModal(seminar)}
-                        icon="ri-download-line"
-                      >
-                        Download
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => openPasswordModal(seminar)}
+                          icon="ri-download-line"
+                        >
+                          Download
+                        </Button>
+                      </div></div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <i className="ri-folder-open-line text-4xl text-gray-400"></i>
+                <p className="mt-4 text-gray-600 dark:text-gray-300">No seminars found.</p>
+              </div>
+            )}
 
             {/* Pagination */}
             {totalPages > 1 && (
@@ -274,6 +321,11 @@ export default function Seminar() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handlePasswordSubmit(e as any);
+                    }
+                  }}
                   placeholder="비밀번호를 입력하세요"
                   required
                   className={passwordError ? 'border-red-500' : ''}
@@ -302,66 +354,7 @@ export default function Seminar() {
             </form>
           </Modal>
 
-          {/* Preview Modal */}
-          <Modal
-            isOpen={previewModal.isOpen}
-            onClose={closePreview}
-            title="Seminar Preview"
-            size="lg"
-          >
-            {previewModal.seminar && (
-              <div>
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    {previewModal.seminar.title}
-                  </h3>
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    <span className="flex items-center">
-                      <i className="ri-calendar-line mr-1"></i>
-                      {formatDate(previewModal.seminar.date)}
-                    </span>
-                    <span className="flex items-center">
-                      <i className="ri-user-line mr-1"></i>
-                      {previewModal.seminar.speaker}
-                    </span>
-                    <span className="flex items-center">
-                      <i className="ri-google-line mr-1"></i>
-                      Google Drive
-                    </span>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {previewModal.seminar.description}
-                  </p>
-                </div>
-
-                {/* Google Drive Preview */}
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-12 text-center">
-                  <div className="text-gray-400 dark:text-gray-500 mb-4">
-                    <i className="ri-google-line text-6xl"></i>
-                  </div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                    Google Drive Preview
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Google Drive 연동을 통해 파일 미리보기를 제공합니다
-                  </p>
-                  <div className="bg-white dark:bg-gray-700 rounded-lg p-6 mb-4">
-                    <div className="text-gray-400 dark:text-gray-500">
-                      <i className="ri-file-pdf-line text-4xl mb-2"></i>
-                      <p className="text-sm">PDF 미리보기 영역</p>
-                    </div>
-                  </div>
-                  <Button
-                    onClick={() => openPasswordModal(previewModal.seminar)}
-                    variant="primary"
-                    icon="ri-download-line"
-                  >
-                    비밀번호 입력 후 다운로드
-                  </Button>
-                </div>
-              </div>
-            )}
-          </Modal>
+          
         </div>
       </div>
     </div>
