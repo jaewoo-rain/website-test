@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/react-pdf": "^6.2.0",
+    "@types/react-pdf": "^5.0.7",
     "gapi-script": "^1.2.0",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",

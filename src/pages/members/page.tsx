@@ -52,7 +52,7 @@ export default function Members() {
                     <img
                       src={member.photo}
                       alt={member.name}
-                      className="w-full h-48 object-cover object-top rounded-lg group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-48 object-contain object-center rounded-lg group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                       <div className="absolute bottom-4 left-4 right-4">
@@ -60,7 +60,7 @@ export default function Members() {
                           {member.year}
                         </p>
                         <p className="text-white/80 text-xs">
-                          {member.research}
+                          {member.dept}
                         </p>
                       </div>
                     </div>
@@ -78,7 +78,7 @@ export default function Members() {
                       {member.position}
                     </p>
                     <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                      {member.research}
+                      {member.dept}
                     </p>
                   </div>
 
@@ -115,48 +115,12 @@ export default function Members() {
                   {hoveredMember === member.id && (
                     <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 dark:bg-gray-700 text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap z-10 opacity-0 animate-fade-in">
                       <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-700 rotate-45"></div>
-                      Specialized in {member.research.split(' ').slice(0, 3).join(' ')}
+                      Specialized in {member.dept.split(' ').slice(0, 3).join(' ')}
                     </div>
                   )}
                 </div>
               </Card>
             ))}
-          </div>
-
-          {/* Team Stats */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-            <Card className="text-center" padding="sm">
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                {membersData.filter(m => m.position.includes('PhD')).length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">
-                PhD Students
-              </div>
-            </Card>
-            <Card className="text-center" padding="sm">
-              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                {membersData.filter(m => m.position.includes('Postdoc')).length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">
-                Postdocs
-              </div>
-            </Card>
-            <Card className="text-center" padding="sm">
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-                {membersData.filter(m => m.position.includes('Master')).length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">
-                Master's Students
-              </div>
-            </Card>
-            <Card className="text-center" padding="sm">
-              <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">
-                {membersData.filter(m => m.position.includes('Scientist')).length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">
-                Research Scientists
-              </div>
-            </Card>
           </div>
         </div>
       </div>
@@ -208,7 +172,7 @@ export default function Members() {
                 Research Focus
               </h4>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                {selectedMember.research}
+                {selectedMember.dept}
               </p>
             </div>
 
@@ -221,7 +185,7 @@ export default function Members() {
               <div className="space-y-2">
                 <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <p className="font-medium text-gray-900 dark:text-white text-sm">
-                    Advanced Techniques in {selectedMember.research.split(' ')[0]} Computing
+                    Advanced Techniques in {selectedMember.dept.split(' ')[0]} Computing
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Conference on Distributed Systems 2024
@@ -229,7 +193,7 @@ export default function Members() {
                 </div>
                 <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <p className="font-medium text-gray-900 dark:text-white text-sm">
-                    Optimization Methods for Large-Scale {selectedMember.research.split(' ')[1]} Systems
+                    Optimization Methods for Large-Scale {selectedMember.dept.split(' ')[1]} Systems
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Journal of Computer Science 2023

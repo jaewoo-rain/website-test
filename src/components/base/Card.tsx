@@ -1,13 +1,14 @@
-import { ReactNode } from 'react';
 
 interface CardProps {
   children: ReactNode;
   className?: string;
   hover?: boolean;
   padding?: 'sm' | 'md' | 'lg';
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-export default function Card({ children, className = '', hover = false, padding = 'md' }: CardProps) {
+export default function Card({ children, className = '', hover = false, padding = 'md', onMouseEnter, onMouseLeave }: CardProps) {
   const paddingClasses = {
     sm: 'p-4',
     md: 'p-6',
@@ -19,7 +20,11 @@ export default function Card({ children, className = '', hover = false, padding 
   const hoverClasses = hover ? 'hover:shadow-lg hover:scale-105 cursor-pointer' : '';
 
   return (
-    <div className={`${baseClasses} ${hoverClasses} ${className}`}>
+    <div 
+      className={`${baseClasses} ${hoverClasses} ${className}`}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {children}
     </div>
   );
