@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useDarkMode } from '../../hooks/useDarkMode';
+import logo from "./../../assets/logo.png"; // 경로는 실제 위치에 맞게 수정
 
 interface NavigationProps {
   className?: string;
@@ -24,11 +25,15 @@ export default function Navigation({ className = '' }: NavigationProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-              <i className="ri-flask-line text-white text-lg"></i>
+            <div className="w-32 h-32 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+              <img 
+                src={logo} 
+                alt="JBNU Logo" 
+                className="w-24 h-24 object-contain" 
+              />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-              JBNU Research Lab
+              {/* JBNU Research Lab */}
             </span>
           </Link>
 
