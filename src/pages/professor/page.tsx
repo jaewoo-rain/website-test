@@ -28,11 +28,13 @@ export default function Professor() {
               {/* Photo */}
               <div className="flex-shrink-0">
                 <div className="relative group">
-                  <img
-                    src={professorData.photo}
-                    alt={professorData.name}
-                    className="w-80 h-96 object-cover object-top rounded-xl shadow-lg"
-                  />
+                  <div className="relative group w-80 h-96 rounded-xl shadow-lg bg-gray-100 flex items-center justify-center">
+                    <img
+                      src={professorData.photo}
+                      alt={professorData.name}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-end">
                     <div className="p-6 text-white">
                       <p className="text-sm font-medium">Research Focus</p>

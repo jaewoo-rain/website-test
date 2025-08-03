@@ -9,58 +9,54 @@ export const professorData = {
   office: "공과대학 7호관 429호",
   officeHours: "Tuesdays and Thursdays, 2:00-4:00 PM",
   researchAreas: [
-    "Machine Learning",
-    "Natural Language Processing",
-    "Computer Vision", 
-    "Artificial Intelligence",
-    "Deep Learning Applications"
+    "Energy-Efficient Computing",
+    "Distributed Systems",
+    "Cloud Computing",
+    "Resource Management in Cloud Data Centers",
+    "Virtualization and VM Consolidation",
+    "Workflow Scheduling",
+    "Middleware Technologies"
   ],
   education: [
     {
-      degree: "Ph.D. in Computer Science",
-      institution: "MIT",
-      year: "2008",
-      thesis: "Advanced Neural Networks for Language Understanding"
+      degree: "Ph.D. in Computer Division",
+      institution: "Korea Advanced Institute of Science and Technology (KAIST), Daejeon, Korea",
+      year: "2019"
     },
     {
-      degree: "M.S. in Computer Science", 
-      institution: "Carnegie Mellon University",
-      year: "2004"
+      degree: "M.S. in Computer Science & Engineering",
+      institution: "Jeonbuk National University (JBNU), Jeonju, Korea",
+      year: "2011"
     },
     {
-      degree: "B.S. in Computer Science",
-      institution: "UC Berkeley", 
-      year: "2002"
+      degree: "B.S. in Computer Science & Engineering",
+      institution: "Jeonbuk National University (JBNU), Jeonju, Korea",
+      year: "2009"
     }
   ],
   career: [
     {
-      position: "Professor",
-      institution: "Stanford University",
-      period: "2018 - Present"
-    },
-    {
       position: "Associate Professor",
-      institution: "Stanford University", 
-      period: "2014 - 2018"
+      institution: "Jeonbuk National University, School of Computer and Artificial Intelligence",
+      period: "2024.03 - Present"
     },
     {
       position: "Assistant Professor",
-      institution: "Stanford University",
-      period: "2008 - 2014"
+      institution: "Jeonbuk National University, School of Computer and Artificial Intelligence",
+      period: "2020.03 - 2024.02"
     },
     {
-      position: "Research Scientist",
-      institution: "Google Research",
-      period: "2006 - 2008"
+      position: "Postdoctoral Researcher",
+      institution: "KAIST",
+      period: "2019.09 - 2020.02"
     }
   ],
-  bio: "Dr. Sarah Chen is a leading researcher in artificial intelligence and machine learning, with over 15 years of experience in developing cutting-edge algorithms for natural language processing and computer vision. Her work has been published in top-tier conferences and journals, and she has received multiple prestigious awards for her contributions to the field.",
+  bio: "소개글",
   awards: [
-    "NSF CAREER Award (2012)",
-    "Google Faculty Research Award (2015)",
-    "ACM Fellow (2019)",
-    "IEEE Fellow (2020)"
+    // "NSF CAREER Award (2012)",
+    "Best Student Paper Award (2015)",
+    "Best Paper Award (2011)",
+    "Excellent Paper Award (2012)"
   ]
 };
 

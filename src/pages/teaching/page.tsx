@@ -3,11 +3,12 @@ import Card from '../../components/base/Card';
 import { coursesData } from '../../mocks/courses';
 
 export default function Teaching() {
+  console.log(new Date().getMonth());
   const currentCourses = coursesData.filter(course => 
-    course.semester.includes('2024')
+    course.semester.includes( new Date().getFullYear().toString() +  (new Date().getMonth() >= 6 ? " 2학기" : " 1학기") )
   );
   const pastCourses = coursesData.filter(course => 
-    !course.semester.includes('2024')
+    !course.semester.includes( new Date().getFullYear().toString() +  (new Date().getMonth() >= 6 ? " 2학기" : " 1학기") )
   );
 
   return (
@@ -32,7 +33,7 @@ export default function Teaching() {
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Current Courses (2024)
+                  Current Courses ({new Date().getFullYear().toString() + (new Date().getMonth() >= 6 ? " 2학기" : " 1학기")})
                 </h2>
               </div>
             </div>
@@ -174,9 +175,9 @@ export default function Teaching() {
             </Card>
             <Card className="text-center" padding="lg">
               <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                {coursesData.filter(c => c.level === 'Graduate').length}
+                {coursesData.filter(c => c.code === '전공').length}
               </div>
-              <div className="text-gray-600 dark:text-gray-300">Graduate Courses</div>
+              <div className="text-gray-600 dark:text-gray-300">Major Courses</div>
             </Card>
             <Card className="text-center" padding="lg">
               <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">

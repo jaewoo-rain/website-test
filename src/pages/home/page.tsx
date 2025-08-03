@@ -304,7 +304,7 @@ export default function Home() {
                     <span>2 Contributors</span>
                   </div>
                   <div className="flex items-center text-orange-600 font-semibold group-hover:text-orange-700">
-                    <span className="mr-2 text-sm">View Progress</span>
+                    <span onClick={() => navigate("/seminar")} className="mr-2 text-sm cursor-pointer">View Progress</span>
                     <i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
                   </div>
                 </div>
@@ -313,7 +313,7 @@ export default function Home() {
 
             {/* JETSON Project */}
             <Card className="group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-0 shadow-xl">
-              <div className="relative overflow-hidden rounded-t-xl mb-6">
+              <div  className="relative overflow-hidden rounded-t-xl mb-6">
                 <img 
                   src="https://readdy.ai/api/search-image?query=NVIDIA%20Jetson%20edge%20computing%20device%2C%20embedded%20AI%20computing%20board%2C%20GPU%20accelerated%20edge%20inference%2C%20autonomous%20systems%20hardware%2C%20robotics%20computing%20platform%2C%20edge%20AI%20development%20kit%2C%20neural%20network%20processing%20unit%2C%20compact%20high-performance%20computing%20module%2C%20green%20circuit%20board%20with%20cooling%20system&width=400&height=240&seq=jetson001&orientation=landscape"
                   alt="JETSON Project"
@@ -346,7 +346,7 @@ export default function Home() {
                     <span>2 Contributors</span>
                   </div>
                   <div className="flex items-center text-green-600 font-semibold group-hover:text-green-700">
-                    <span className="mr-2 text-sm">View Progress</span>
+                    <span onClick={() => navigate("/seminar")} className="mr-2 text-sm cursor-pointer">View Progress</span>
                     <i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
                   </div>
                 </div>
@@ -388,7 +388,7 @@ export default function Home() {
                     <span>1 Contributors</span>
                   </div>
                   <div className="flex items-center text-purple-600 font-semibold group-hover:text-purple-700">
-                    <span className="mr-2 text-sm">View Progress</span>
+                    <span onClick={() => navigate("/seminar")} className="mr-2 text-sm cursor-pointer">View Progress</span>
                     <i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
                   </div>
                 </div>
